@@ -1,0 +1,76 @@
+% texforge example — a technical report/article.
+% Renders with: texforge render examples/report/main.tex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{microtype}          % better justification; fixes many overfull boxes
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=teal!70!black}
+
+\title{\textbf{texforge}\\\large A self-healing \LaTeX\,$\rightarrow$\,PDF engine}
+\author{Rendered by the texforge engine on tectonic}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report is a fixture: it exercises sectioning, cross-references, a table, an
+equation and a bulleted list so a single build proves the toolchain end to end.
+Because tectonic fetches missing packages on demand, this file compiles from a
+clean machine with no \TeX{} installation.
+\end{abstract}
+
+\tableofcontents
+\vspace{1em}
+
+\section{Introduction}
+\label{sec:intro}
+texforge wraps the tectonic engine with an observable CLI. It streams structured
+logs, times every build, and reads the engine's own output to suggest fixes for
+common problems --- see Section~\ref{sec:results}.
+
+\section{A little mathematics}
+The Gaussian integral, for good measure:
+\begin{equation}
+  \int_{-\infty}^{\infty} e^{-x^2}\,\mathrm{d}x = \sqrt{\pi}.
+  \label{eq:gauss}
+\end{equation}
+Equation~\eqref{eq:gauss} typesets cleanly with \texttt{amsmath}.
+
+\section{Results}
+\label{sec:results}
+A small table via \texttt{booktabs}:
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{lrr}
+    \toprule
+    Stage & Cold build & Warm build \\
+    \midrule
+    Fetch packages & yes & cached \\
+    Compile passes & 2   & 2 \\
+    Total          & slower & fast \\
+    \bottomrule
+  \end{tabular}
+  \caption{Cold vs.\ warm builds. Warm builds reuse the package cache.}
+  \label{tab:builds}
+\end{table}
+
+Design goals:
+\begin{itemize}
+  \item \textbf{Self-healing} --- packages arrive on demand.
+  \item \textbf{Self-optimizing} --- caching plus log-driven suggestions.
+  \item \textbf{Observable} --- level-controlled, structured logs.
+  \item \textbf{Portable} --- one static binary per OS, no runtime deps.
+\end{itemize}
+
+\section{Conclusion}
+If you can read this PDF, the engine works. See the project
+\href{https://github.com/m3di/texforge}{README} for the quickstart.
+
+\end{document}

@@ -1,0 +1,57 @@
+% texforge example — fonts + emoji showcase.
+% Requires the bundled fonts installed by name:  texforge fonts --install
+% Renders with: texforge render examples/showcase/main.tex
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{fontspec}      % XeTeX font machinery (tectonic is XeTeX-based)
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{parskip}
+
+% --- Fonts, referenced by family NAME (installed via `texforge fonts --install`).
+\setmainfont{Fira Sans}
+\setmonofont{IBM Plex Mono}
+\newfontfamily\serif{IBM Plex Serif}
+
+% --- Emoji as a dedicated face. On tectonic/XeTeX, emoji render as crisp
+%     MONOCHROME glyphs (OpenMoji). Colour bitmap/COLR emoji are not supported
+%     by the XeTeX engine — this is a documented engine limitation.
+\newfontface\emojifont{OpenMoji Black}
+\newcommand{\e}[1]{{\emojifont\char"#1}}
+
+\definecolor{accent}{HTML}{C1121F}
+
+\begin{document}
+
+{\Huge\bfseries texforge \e{1F680}}\par
+\vspace{2pt}
+{\color{accent}\large Fonts and emoji, rendered out of the box.}\par
+\vspace{1em}
+
+This page is set in \textbf{Fira Sans}. Inline code looks like
+\texttt{texforge render main.tex}, and here is a line in
+{\serif IBM Plex Serif for contrast}. All three fonts ship with texforge and
+are found by \emph{family name} — no per-machine paths in the document.
+
+\bigskip
+{\Large Emoji \e{1F600}\;\e{1F389}\;\e{2764}\;\e{1F44D}\;\e{1F4A1}\;\e{2705}\;\e{1F310}\;\e{1F4E6}\;\e{2699}\;\e{1F4C4}}
+
+\bigskip
+\textbf{Type specimen}\par
+{\fontsize{9}{11}\selectfont The quick brown fox jumps over the lazy dog.}\par
+{\fontsize{12}{15}\selectfont The quick brown fox jumps over the lazy dog.}\par
+{\fontsize{18}{22}\selectfont The quick brown fox jumps over the lazy dog.}\par
+{\fontsize{28}{34}\selectfont Forge \e{1F528} your PDFs.}
+
+\bigskip
+\textbf{Weights \& shapes}\par
+{\bfseries Bold.} {\itshape Italic.} {\bfseries\itshape Bold italic.}
+\texttt{Monospace 0O1lI.}
+
+\vfill
+{\footnotesize\color{gray}
+Rendered by texforge on tectonic (XeTeX). Emoji: OpenMoji (CC BY-SA 4.0),
+shown monochrome by engine design.}
+
+\end{document}

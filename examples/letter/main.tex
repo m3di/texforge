@@ -1,0 +1,36 @@
+% texforge example — a formal letter using the standard `letter` class.
+% Renders with: texforge render examples/letter/main.tex
+\documentclass[11pt,a4paper]{letter}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+
+\signature{Ada Lovelace}
+\address{Ada Lovelace\\12 Analytical Way\\London, UK}
+\date{\today}
+
+\begin{document}
+
+\begin{letter}{Charles Babbage\\Dorset Street\\London, UK}
+
+\opening{Dear Mr.\ Babbage,}
+
+Thank you for the memoir on the Analytical Engine. I have appended a set of
+notes considerably longer than the original text, in which I set out a method
+for computing the Bernoulli numbers by machine.
+
+I believe the engine's significance is widely under-appreciated: it does not
+merely calculate, but manipulates symbols according to rules, and might in
+principle act upon anything whose relations can be expressed. This letter was
+itself typeset by a self-healing engine that fetched every package it needed on
+demand --- a small echo of the idea.
+
+I look forward to your thoughts.
+
+\closing{With warm regards,}
+
+\ps{P.S. The full working is enclosed in the accompanying report.}
+
+\end{letter}
+\end{document}

@@ -1,0 +1,60 @@
+% texforge example — a clean one-column resume/CV.
+% Renders with: texforge render examples/resume/main.tex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1.8cm]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fontawesome5}      % icons; fetched on demand by tectonic
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{accent}{HTML}{2A6F97}
+\setlist[itemize]{leftmargin=1.2em, itemsep=1pt, topsep=2pt}
+
+% Section headers: small-caps accent with a rule underneath.
+\titleformat{\section}{\large\scshape\color{accent}}{}{0em}{}[\vspace{-0.6em}\color{accent!40}\rule{\linewidth}{0.8pt}]
+\titlespacing{\section}{0pt}{10pt}{4pt}
+\pagestyle{empty}
+
+\newcommand{\entry}[4]{%
+  \noindent\textbf{#1} \hfill {\color{accent}#2}\\
+  \textit{#3} \hfill \textit{#4}\par\vspace{2pt}}
+
+\begin{document}
+
+% --- Header ---
+{\Huge\bfseries Ada Lovelace}\\[2pt]
+{\color{accent}\large Analytical Engine Programmer}\\[4pt]
+\faEnvelope\ ada@example.com \quad
+\faGlobe\ example.com \quad
+\faGithub\ /ada \quad
+\faMapMarker*\ London, UK
+
+\section{Summary}
+Mathematician and writer, best known for work on Charles Babbage's proposed
+Analytical Engine. Author of what is regarded as the first algorithm intended
+to be carried out by a machine.
+
+\section{Experience}
+\entry{Analytical Engine}{1842 -- 1843}{Lead Note-Writer \& Algorithm Designer}{Remote}
+\begin{itemize}
+  \item Translated Menabrea's memoir and appended notes three times its length.
+  \item Described an algorithm to compute Bernoulli numbers on the engine.
+  \item Foresaw general-purpose computation beyond pure calculation.
+\end{itemize}
+\vspace{4pt}
+\entry{Independent Study}{1833 -- 1842}{Mathematics \& Mechanics}{London}
+\begin{itemize}
+  \item Correspondence with De Morgan on calculus and symbolic logic.
+\end{itemize}
+
+\section{Skills}
+Algorithm design \textbullet\ Symbolic logic \textbullet\ Technical writing
+\textbullet\ Mathematics \textbullet\ Mechanical computation
+
+\section{Education}
+\entry{Self-directed}{}{Mathematics, Logic, Music}{}
+
+\end{document}
