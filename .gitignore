@@ -1,0 +1,26 @@
+# Build artifacts
+/bin/
+/dist/
+*.exe
+
+# LaTeX intermediates (PDFs under examples/ ARE committed for the gallery)
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.xdv
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+texforge.log.jsonl
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Local engine/fonts cache (lives in ~/.texforge, but ignore if copied here)
+/.texforge/
