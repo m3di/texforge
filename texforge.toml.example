@@ -1,0 +1,37 @@
+# texforge.toml — project defaults for texforge.
+#
+# Drop a copy named `texforge.toml` next to your document (or anywhere up the
+# directory tree). Every key is optional; CLI flags always override the file.
+# texforge searches upward from the input file, so one file at the repo root
+# can serve many documents.
+
+# The document to build when you run `texforge render` with no path.
+input = "main.tex"
+
+# Where PDFs and logs are written (relative to the .tex file).
+output = "output"
+
+# Output PDF basename without extension. Empty = use the input's name.
+name = ""
+
+# Console log level: debug | info | warn | error.
+verbosity = "info"
+
+# Keep a structured build log (output/texforge.log.jsonl) for `texforge analyze`.
+keep_logs = true
+
+# Rebuild automatically on file changes.
+watch = false
+
+# Remove intermediate/aux files after a successful build.
+clean_after = false
+
+# Expose the bundled fonts to the engine (OSFONTDIR). Leave true unless you
+# manage fonts yourself.
+fonts = true
+
+# Force exactly N engine passes. 0 = let tectonic decide (recommended).
+runs = 0
+
+# Extra flags passed straight through to tectonic, e.g. SyncTeX for editors.
+engine_flags = ["--synctex"]
