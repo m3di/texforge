@@ -85,6 +85,54 @@ var rules = []rule{
 		},
 	},
 	{
+		kind:  "bidi-package-order",
+		sev:   SevError,
+		re:    regexp.MustCompile(`Oops! you have loaded package (\w+) after bidi`),
+		title: "A package was loaded after bidi",
+		titlef: func(m []string) string {
+			return "Loaded after bidi: " + m[1]
+		},
+		suggest: func(m []string) string {
+			return "bidi — pulled in by polyglossia for any RTL language — has to be loaded last. Move \\usepackage{" + m[1] + "}, and every other package, above \\usepackage{polyglossia}. See docs/rtl.md."
+		},
+	},
+	{
+		kind:  "script-font-undefined",
+		sev:   SevError,
+		re:    regexp.MustCompile(`Please define \\(\w+) with \\newfontfamily`),
+		title: "No font is set for this script",
+		titlef: func(m []string) string {
+			return "Script font not defined: \\" + m[1]
+		},
+		suggest: func(m []string) string {
+			return "polyglossia wants a face covering the script: \\newfontfamily\\" + m[1] + "[Script=Arabic]{<Family>} (fonts are keyed by script, not language). This also fires when a language switch happens inside \\sffamily/\\ttfamily — use the language environment there instead. See docs/rtl.md."
+		},
+	},
+	{
+		kind:  "unknown-language-option",
+		sev:   SevError,
+		re:    regexp.MustCompile(`Package xkeyval Error: ` + "`" + `([\w-]+)' undefined in families ` + "`" + `([\w-]+)'`),
+		title: "Unsupported language option",
+		titlef: func(m []string) string {
+			return "Unknown option '" + m[1] + "' for language '" + m[2] + "'"
+		},
+		suggest: func(m []string) string {
+			return "This polyglossia release does not accept '" + m[1] + "' for " + m[2] + " — the option set differs between languages and releases. Drop it from \\setotherlanguage[...]{" + m[2] + "} and set the behaviour in the document instead."
+		},
+	},
+	{
+		kind:  "command-already-defined",
+		sev:   SevError,
+		re:    regexp.MustCompile(`Command \\(\S+?) already defined`),
+		title: "Command already defined",
+		titlef: func(m []string) string {
+			return "Already defined: \\" + m[1]
+		},
+		suggest: func(m []string) string {
+			return "\\newcommand is claiming a name a class or package already owns — short ones like \\lang, \\en or \\note collide often. Rename it, or use \\renewcommand if replacing it is deliberate."
+		},
+	},
+	{
 		kind:  "file-not-found",
 		sev:   SevError,
 		re:    regexp.MustCompile(`(?:File|Image|Graphics?) [` + "`" + `']?([^']+?)'? not found`),
@@ -120,7 +168,7 @@ var rules = []rule{
 		re:    regexp.MustCompile(`Overfull \\hbox \(([\d.]+)pt too wide\)`),
 		title: "Overfull hbox (text runs into the margin)",
 		suggest: func(m []string) string {
-			return "A line is too wide for its column. Add \\usepackage{microtype}, rephrase, insert a discretionary hyphen \\-, or wrap long unbreakable strings (URLs) in \\url{} / \\seqsplit."
+			return "A line is too wide for its column. For an overhang of a point or two reach for \\setlength{\\emergencystretch}{2em} — microtype alone will not clear it. Otherwise rephrase, insert a discretionary hyphen \\-, or wrap long unbreakable strings (URLs) in \\url{} / \\seqsplit. Unhyphenated scripts (Arabic, Persian, Hebrew, CJK) hit this more often."
 		},
 	},
 	{

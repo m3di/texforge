@@ -28,6 +28,11 @@ A cross-OS **LaTeX → PDF engine**: a small Go CLI wrapping the **tectonic**
 - **Emoji are monochrome by engine limitation** (XeTeX can't do colour fonts).
   Don't "fix" this by bundling a colour emoji font — it renders blank. See
   `docs/emoji.md`.
+- **RTL is polyglossia-last, font-per-script.** `polyglossia` loads `bidi`,
+  which must come after every other package; faces are keyed by script
+  (`\arabicfont` serves farsi/arabic/urdu). Latin runs inside RTL text need an
+  LTR box *per phrase* — most Arabic-script faces have no Latin glyphs, and
+  adjacent boxes reverse. No RTL face is bundled. See `docs/rtl.md`.
 
 ## Build & test
 

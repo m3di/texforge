@@ -130,6 +130,15 @@ reinstall to add more.
 > need full-colour emoji, include them as images instead — that's outside the
 > XeTeX text path. See [the note in `docs/`](docs/emoji.md).
 
+> **Right-to-left works, with three gotchas.** Arabic, Persian and Hebrew
+> typeset correctly via `polyglossia` + `bidi` — but `polyglossia` must be the
+> *last* package you load, the font is chosen per **script**
+> (`\newfontfamily\arabicfont{...}`, not per language), and most Arabic-script
+> faces carry no Latin glyphs, so Latin words inside RTL text need wrapping in
+> `\textenglish{}` — a whole phrase per box, or it comes out reversed. texforge
+> bundles no RTL face; drop your own into `~/.texforge/fonts`. See
+> [`docs/rtl.md`](docs/rtl.md).
+
 ## Observability & the issue-finder
 
 Every build is timed and logged. With `keep_logs` on (default), a structured
@@ -141,8 +150,9 @@ texforge analyze output/texforge.log.jsonl
 
 The analyzer recognises common failure and inefficiency signatures — missing
 package, undefined control sequence, font-not-found, missing image, unresolved
-`\ref`/`\cite`, overfull/underfull boxes, multiply-defined labels — and prints a
-plain-language **suggestion** for each. It runs automatically after every build:
+`\ref`/`\cite`, overfull/underfull boxes, multiply-defined labels, name
+collisions, and RTL/`bidi` setup mistakes — and prints a plain-language
+**suggestion** for each. It runs automatically after every build:
 
 ```
 error Undefined control sequence (×2)
