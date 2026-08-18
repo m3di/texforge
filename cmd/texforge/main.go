@@ -86,16 +86,16 @@ func main() {
 // parseFlags splits render/watch flags from positional args and engine
 // passthrough (everything after "--").
 type renderFlags struct {
-	output    string
-	name      string
-	verbose   bool
-	quiet     bool
-	cleanAft  bool
-	noFonts   bool
-	runs      int
-	configArg string
+	output     string
+	name       string
+	verbose    bool
+	quiet      bool
+	cleanAft   bool
+	noFonts    bool
+	runs       int
+	configArg  string
 	positional []string
-	passthru  []string
+	passthru   []string
 }
 
 func parseRenderFlags(args []string) (renderFlags, error) {
