@@ -80,6 +80,9 @@ fi
 # --- 4. Font bundle ---------------------------------------------------------
 say "Fetching font bundle"
 GF="https://github.com/google/fonts/raw/main/ofl"
+NOTO="https://github.com/notofonts/notofonts.github.io/raw/main/fonts"
+VAZIR="https://github.com/rastikerdar/vazirmatn/raw/master/fonts/ttf"
+EBG="https://github.com/octaviopardo/EBGaramond12/raw/master/fonts/ttf"
 fetch_font() {
   if [ -f "$FONTS/$2" ]; then return 0; fi
   if curl -fsSL -o "$FONTS/$2" "$1/$2"; then info "font: $2"; else info "skip (unavailable): $2"; fi
@@ -90,10 +93,22 @@ for f in IBMPlexSerif-Regular IBMPlexSerif-Bold IBMPlexSerif-Italic; do
   fetch_font "$GF/ibmplexserif" "$f.ttf"; done
 for f in IBMPlexMono-Regular IBMPlexMono-Bold; do
   fetch_font "$GF/ibmplexmono" "$f.ttf"; done
-# Amiri — an Arabic-script face, so RTL documents work without extra setup.
-# Nothing else in the bundle covers Arabic/Persian. See docs/rtl.md.
+for f in EBGaramond-Regular EBGaramond-Bold EBGaramond-Italic; do
+  fetch_font "$EBG" "$f.ttf"; done
+# Arabic script (Arabic, Persian, Urdu). Amiri is a classical naskh, Vazirmatn a
+# contemporary sans, Lalezar a display face, Gulzar a nastaliq. See docs/rtl.md.
 for f in Amiri-Regular Amiri-Bold; do
   fetch_font "$GF/amiri" "$f.ttf"; done
+for f in Vazirmatn-Regular Vazirmatn-Bold; do
+  fetch_font "$VAZIR" "$f.ttf"; done
+fetch_font "$GF/lalezar" "Lalezar-Regular.ttf"
+fetch_font "$GF/gulzar" "Gulzar-Regular.ttf"
+# Hebrew and Devanagari. Static instances, not the variable builds: XeTeX takes
+# a variable font's default instance, which for Noto Sans Hebrew is Thin.
+for f in NotoSansHebrew-Regular NotoSansHebrew-Bold; do
+  fetch_font "$NOTO/NotoSansHebrew/full/ttf" "$f.ttf"; done
+for f in NotoSansDevanagari-Regular NotoSansDevanagari-Bold; do
+  fetch_font "$NOTO/NotoSansDevanagari/full/ttf" "$f.ttf"; done
 # OpenMoji Black — the emoji face XeTeX can render (monochrome). Its source
 # filename differs from the installed name, so fetch it explicitly.
 if [ ! -f "$FONTS/OpenMoji-Black.ttf" ]; then

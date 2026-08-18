@@ -1,0 +1,98 @@
+% texforge example — type specimen: every bundled family, one sentence per script.
+% Requires the bundled fonts installed by name:  texforge fonts --install
+% Renders with: texforge render examples/specimen/main.tex
+\documentclass[10pt,a4paper]{article}
+
+% --- Every package before polyglossia; bidi must be loaded last (see docs/rtl.md).
+\usepackage[top=1.3cm,bottom=1.2cm,left=1.8cm,right=1.8cm]{geometry}
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{parskip}
+
+\setmainfont{Fira Sans}
+\setmonofont{IBM Plex Mono}
+
+\usepackage{polyglossia}
+\setmainlanguage{english}
+\setotherlanguage{arabic}
+\setotherlanguage{farsi}
+\setotherlanguage{hebrew}
+
+% --- One family per script for the language machinery; the specimens below
+%     switch face explicitly so every bundled family gets shown.
+\newfontfamily\arabicfont[Script=Arabic]{Amiri}
+\newfontfamily\hebrewfont[Script=Hebrew]{Noto Sans Hebrew}
+
+\newfontfamily\firasans{Fira Sans}
+\newfontfamily\plexserif{IBM Plex Serif}
+\newfontfamily\plexmono{IBM Plex Mono}
+\newfontfamily\garamond{EB Garamond}
+
+\newfontfamily\amiri[Script=Arabic]{Amiri}
+\newfontfamily\vazirmatn[Script=Arabic]{Vazirmatn}
+\newfontfamily\lalezar[Script=Arabic]{Lalezar}
+\newfontfamily\gulzar[Script=Arabic]{Gulzar}
+
+\newfontfamily\notohebrew[Script=Hebrew]{Noto Sans Hebrew}
+\newfontfamily\notodeva[Script=Devanagari]{Noto Sans Devanagari}
+\newfontface\openmoji{OpenMoji Black}
+
+\definecolor{accent}{HTML}{1F6F6B}
+\definecolor{muted}{HTML}{5B6B7A}
+\definecolor{rule}{HTML}{DDE4EA}
+
+% \heading{title}{note}
+\newcommand{\heading}[2]{%
+  \vspace{0.5em}%
+  {\bfseries\large\color{accent}#1}\quad{\color{muted}\small #2}\par
+  \vspace{-0.3em}{\color{rule}\rule{\linewidth}{0.6pt}}\par
+  \vspace{0.3em}}
+
+% \spec{family name}{styles available}{the rendered sample}
+\newcommand{\spec}[3]{%
+  \vspace{0.22em}%
+  {\ttfamily\footnotesize\color{muted}\textbackslash setmainfont\{#1\}}%
+  \hfill{\footnotesize\color{muted}#2}\par
+  \vspace{0.1em}{#3\par}}
+
+% The sentence, once per script.
+\newcommand{\enSentence}{The quick brown fox jumps over the lazy dog — 0123456789}
+\newcommand{\faSentence}{طراحی و حروف‌چینی متن فارسی با موتور زی‌تک — ۱۲۳۴۵۶۷۸۹۰}
+\newcommand{\arSentence}{نص عربي لمقارنة الخطوط المتوفرة — ١٢٣٤٥٦٧٨٩٠}
+\newcommand{\heSentence}{טקסט עברי לדוגמה להשוואת גופנים — 1234567890}
+\newcommand{\hiSentence}{यह फ़ॉन्ट की तुलना के लिए एक नमूना वाक्य है — 1234567890}
+
+\begin{document}
+
+{\bfseries\LARGE Type specimen}\par
+\vspace{2pt}
+{\color{accent}\large Every bundled family, the same sentence per script.}\par
+\vspace{0.3em}
+{\color{muted}\small Fetched by \texttt{./install.sh}, registered by \texttt{texforge fonts --install};
+reference any of them by family name. Add your own by dropping the file into \texttt{\textasciitilde/.texforge/fonts}.}
+
+\heading{Latin}{Cyrillic in all four; Greek in Fira Sans and EB Garamond}
+\spec{Fira Sans}{Regular · Bold · Italic · Bold Italic — sans}{\firasans\large\enSentence}
+\spec{IBM Plex Serif}{Regular · Bold · Italic — serif}{\plexserif\large\enSentence}
+\spec{EB Garamond}{Regular · Bold · Italic — book serif}{\garamond\large\enSentence}
+\spec{IBM Plex Mono}{Regular · Bold — monospace}{\plexmono\large\enSentence}
+
+\heading{Arabic script}{Arabic · Persian · Urdu — right-to-left, see \texttt{docs/rtl.md}}
+\spec{Amiri}{Regular · Bold — classical naskh}{\begin{farsi}{\amiri\large\faSentence}\end{farsi}}
+\spec{Vazirmatn}{Regular · Bold — contemporary sans}{\begin{farsi}{\vazirmatn\large\faSentence}\end{farsi}}
+\spec{Lalezar}{Regular only — display / headlines}{\begin{farsi}{\lalezar\large\faSentence}\end{farsi}}
+\spec{Gulzar}{Regular only — nastaliq}{\begin{farsi}{\gulzar\large\faSentence}\end{farsi}}
+
+{\color{muted}\small The same four faces set Arabic and Urdu:}\quad
+\begin{Arabic}{\amiri\arSentence}\end{Arabic}
+
+\heading{Hebrew}{right-to-left}
+\spec{Noto Sans Hebrew}{Regular · Bold}{\begin{hebrew}{\notohebrew\large\heSentence}\end{hebrew}}
+
+\heading{Devanagari}{Hindi · Marathi · Sanskrit}
+\spec{Noto Sans Devanagari}{Regular · Bold}{{\notodeva\large\hiSentence}}
+
+\heading{Emoji}{monochrome only — an XeTeX limitation, see \texttt{docs/emoji.md}}
+\spec{OpenMoji Black}{Regular}{{\openmoji\large\char"1F680\ \char"2705\ \char"1F4C4\ \char"2712\ \char"1F310}}
+
+\end{document}

@@ -65,10 +65,28 @@ inside a font-family group**. `\textfarsi{…}` within `\sffamily` or `\ttfamily
 trips it, because the family in force is not the one carrying the script. Use the
 language environment (`\begin{farsi} … \end{farsi}`) in those places.
 
-texforge bundles no Arabic-script or Hebrew face — Fira Sans, IBM Plex and
-OpenMoji are Latin. Supply your own: drop the `.ttf`/`.otf` into
+texforge bundles four Arabic-script faces and one Hebrew face, all by family
+name:
+
+| family | style |
+|---|---|
+| Amiri | classical naskh, Regular + Bold — a good default for running text |
+| Vazirmatn | contemporary sans, Regular + Bold — screen-friendly, Persian-first |
+| Lalezar | display, Regular only — headings, not body copy |
+| Gulzar | nastaliq, Regular only — calligraphic, needs generous line spacing |
+| Noto Sans Hebrew | Regular + Bold |
+
+Set them per script, and remember Hebrew wants its own: `\newfontfamily\hebrewfont[Script=Hebrew]{Noto Sans Hebrew}`.
+
+The [type specimen](../examples/specimen/main.tex) renders the same sentence in
+each so you can pick by eye.
+
+Anything else — including commercial Persian faces such as the B-series
+(B Nazanin, B Titr, B Yas, B Mitra, B Zar), which are licensed and cannot be
+redistributed — you supply yourself: drop the `.ttf`/`.otf` into
 `~/.texforge/fonts`, run `texforge fonts --install`, then reference it by family
-name like any other font.
+name like any other font. Check the name the file actually declares; it is not
+always what the filename suggests.
 
 ## The `arabic` environment name
 
@@ -129,6 +147,14 @@ one is a hard error:
 
 Rather than chase which spelling your release accepts, type the digits you
 actually want — `۱۲۳` or `123` — directly in the source.
+
+## Variable fonts
+
+XeTeX uses a variable font's **default instance** and cannot select an axis
+position, so a `Family[wght].ttf` gives you whatever weight the designer set as
+default — for Noto Sans Hebrew that is *Thin*, which looks broken as body text —
+and no real bold to pair with it. Prefer static `-Regular`/`-Bold` files where
+the project ships them; that is what the bundle does.
 
 ## Justification
 
