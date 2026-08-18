@@ -1,0 +1,87 @@
+% texforge example — right-to-left typesetting (Arabic and Persian).
+% Requires the bundled fonts installed by name:  texforge fonts --install
+% Renders with: texforge render examples/rtl/main.tex
+% Background and the full list of traps: docs/rtl.md
+\documentclass[12pt,a4paper]{article}
+
+% --- 1. EVERY other package loads first. polyglossia pulls in `bidi`, and bidi
+%        must come last, or it aborts with "you have loaded package X after bidi".
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{parskip}
+
+\setmainfont{IBM Plex Serif}
+\setsansfont{Fira Sans}
+
+% --- 2. polyglossia last.
+\usepackage{polyglossia}
+\setmainlanguage{english}
+\setotherlanguage{arabic}
+\setotherlanguage{farsi}
+
+% --- 3. Fonts are keyed by SCRIPT, not by language: one \arabicfont serves
+%        Arabic, Persian and Urdu alike. Defining only \farsifont still fails.
+\newfontfamily\arabicfont[Script=Arabic,Scale=1.2]{Amiri}
+
+% --- 4. A Latin run inside RTL text, set left-to-right in the Latin font.
+%        Wrap a WHOLE PHRASE per box — see the demonstration below.
+\newcommand{\ltr}[1]{\textenglish{#1}}
+
+\definecolor{accent}{HTML}{1F6F6B}
+\definecolor{muted}{HTML}{5B6B7A}
+
+\begin{document}
+
+{\sffamily\bfseries\Huge Right-to-left}\par
+\vspace{2pt}
+{\sffamily\color{accent}\large Arabic and Persian, via polyglossia + bidi.}\par
+\vspace{1em}
+
+English and RTL paragraphs sit side by side in one document; the engine switches
+direction, font and shaping at the language boundary.
+
+\begin{Arabic}
+هذه الفقرة مكتوبة بالعربية، ويتكفل المحرك بتشكيل الحروف ووصلها وضبط اتجاه
+السطر من اليمين إلى اليسار. الأرقام ١٢٣٤٥ تظهر كما هي في المصدر.
+\end{Arabic}
+
+\begin{farsi}
+این پاراگراف به فارسی نوشته شده است. حروف ویژهٔ فارسی — پ، چ، ژ، گ — و
+نویسهٔ نیم‌فاصله در واژه‌هایی مانند «می‌شود» به‌درستی نمایش داده می‌شوند.
+موتور \ltr{tectonic} بر پایهٔ \ltr{XeTeX} کار می‌کند و بستهٔ \ltr{polyglossia}
+جهت متن را مدیریت می‌کند. اعداد فارسی: ۱۴۰۳ و اعداد لاتین: 2024.
+\end{farsi}
+
+\vspace{0.6em}
+{\sffamily\bfseries\large One box per phrase}\par
+\vspace{0.2em}
+Adjacent left-to-right boxes are themselves laid out right-to-left, so splitting
+a phrase across two of them silently reverses the words. Nothing warns you:
+
+\begin{farsi}
+\ltr{Open} \ltr{Source} \quad {\color{muted}—} \quad \ltr{two boxes, reversed}
+\end{farsi}
+
+\begin{farsi}
+\ltr{Open Source} \quad {\color{muted}—} \quad \ltr{one box, correct}
+\end{farsi}
+
+\vspace{0.9em}
+{\sffamily\bfseries\large What bites}\par
+\vspace{0.2em}
+\begin{itemize}\setlength\itemsep{2pt}
+  \item \textbf{Load order.} \texttt{polyglossia} pulls in \texttt{bidi}, which
+        must be last — every other package goes above it.
+  \item \textbf{Font per script.} \verb|\arabicfont| serves Arabic, Persian and
+        Urdu; defining only \verb|\farsifont| still errors.
+  \item \textbf{Name clashes.} The \verb|arabic| environment collides with
+        LaTeX's \verb|\arabic| counter — use \verb|Arabic| instead, as this
+        file does.
+\end{itemize}
+
+\vspace{0.4em}
+{\color{muted}\small Text set in Amiri (SIL OFL). Arabic script only — this face
+carries no Hebrew. Full notes: \texttt{docs/rtl.md}.}
+
+\end{document}

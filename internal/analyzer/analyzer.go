@@ -41,12 +41,12 @@ type Finding struct {
 }
 
 type rule struct {
-	kind     string
-	sev      Severity
-	re       *regexp.Regexp
-	title    string
-	suggest  func(m []string) string
-	titlef   func(m []string) string // optional dynamic title
+	kind    string
+	sev     Severity
+	re      *regexp.Regexp
+	title   string
+	suggest func(m []string) string
+	titlef  func(m []string) string // optional dynamic title
 }
 
 // Package names that map cleanly from a missing .sty file.
@@ -106,6 +106,15 @@ var rules = []rule{
 		},
 		suggest: func(m []string) string {
 			return "polyglossia wants a face covering the script: \\newfontfamily\\" + m[1] + "[Script=Arabic]{<Family>} (fonts are keyed by script, not language). This also fires when a language switch happens inside \\sffamily/\\ttfamily — use the language environment there instead. See docs/rtl.md."
+		},
+	},
+	{
+		kind:  "language-env-name-clash",
+		sev:   SevError,
+		re:    regexp.MustCompile(`\\c@\p{Arabic}`),
+		title: "Language environment name clashes with a LaTeX command",
+		suggest: func(m []string) string {
+			return "\\begin{arabic} is being read as LaTeX's \\arabic counter command, so the text after it is parsed as a counter name. polyglossia ships a capitalised environment for exactly this collision: use \\begin{Arabic} ... \\end{Arabic}, or \\textarabic{...}. See docs/rtl.md."
 		},
 	},
 	{

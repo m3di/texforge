@@ -4,7 +4,7 @@
 # Fetches everything needed to render LaTeX with no system TeX install:
 #   1. the tectonic engine binary (per OS/arch)     -> ~/.texforge/bin
 #   2. the texforge CLI (release binary, or builds)  -> ~/.texforge/bin
-#   3. the default font bundle + emoji               -> ~/.texforge/fonts
+#   3. the default font bundle + emoji + RTL         -> ~/.texforge/fonts
 #   4. installs those fonts by name into your OS font dir
 #
 # Usage:  ./install.sh            (or: curl -fsSL <raw>/install.sh | sh)
@@ -90,6 +90,10 @@ for f in IBMPlexSerif-Regular IBMPlexSerif-Bold IBMPlexSerif-Italic; do
   fetch_font "$GF/ibmplexserif" "$f.ttf"; done
 for f in IBMPlexMono-Regular IBMPlexMono-Bold; do
   fetch_font "$GF/ibmplexmono" "$f.ttf"; done
+# Amiri — an Arabic-script face, so RTL documents work without extra setup.
+# Nothing else in the bundle covers Arabic/Persian. See docs/rtl.md.
+for f in Amiri-Regular Amiri-Bold; do
+  fetch_font "$GF/amiri" "$f.ttf"; done
 # OpenMoji Black — the emoji face XeTeX can render (monochrome). Its source
 # filename differs from the installed name, so fetch it explicitly.
 if [ ! -f "$FONTS/OpenMoji-Black.ttf" ]; then

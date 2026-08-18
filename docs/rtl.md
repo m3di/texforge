@@ -1,9 +1,9 @@
 # Right-to-left text on texforge (tectonic / XeTeX)
 
 **Short version:** RTL works — Arabic, Persian, Hebrew — through `polyglossia`,
-which pulls in `bidi`. Three things bite, and only the first two announce
-themselves: **package order**, the **script font**, and **Latin runs inside RTL
-text**, which fail silently.
+which pulls in `bidi`. Four things bite: **package order**, the **script font**,
+the **`arabic` environment name**, and **Latin runs inside RTL text** — the last
+of which fails silently, with no error at all.
 
 ## A preamble that works
 
@@ -69,6 +69,26 @@ texforge bundles no Arabic-script or Hebrew face — Fira Sans, IBM Plex and
 OpenMoji are Latin. Supply your own: drop the `.ttf`/`.otf` into
 `~/.texforge/fonts`, run `texforge fonts --install`, then reference it by family
 name like any other font.
+
+## The `arabic` environment name
+
+```
+! Missing number, treated as zero.
+<to be read again>
+                   \c@<arabic letter>
+```
+
+`\begin{arabic}` is read as LaTeX's own `\arabic` counter command, which then
+consumes the following text as a counter name. The error mentions neither
+polyglossia nor Arabic, so it is a genuinely puzzling one to land on.
+
+polyglossia ships a capitalised environment for precisely this collision:
+
+```latex
+\begin{Arabic} … \end{Arabic}     % or \textarabic{…}
+```
+
+Other languages are unaffected — `\begin{farsi}` has nothing to collide with.
 
 ## Latin runs inside RTL text — the silent one
 

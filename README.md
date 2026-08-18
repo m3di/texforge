@@ -56,6 +56,13 @@ Every PDF below was rendered by texforge itself, from the sources in
   <sub>the standard <code>letter</code> class</sub>
 </td>
 </tr>
+<tr>
+<td width="50%" align="center">
+  <a href="examples/rtl/output/main.pdf"><img src="docs/previews/rtl.png" width="100%"><br><b>Right-to-left</b></a><br>
+  <sub>Arabic &amp; Persian via polyglossia + bidi, mixed with Latin</sub>
+</td>
+<td width="50%" align="center"></td>
+</tr>
 </table>
 
 ## Usage
@@ -108,7 +115,7 @@ engine_flags = ["--synctex"]
 ## Fonts & emoji
 
 The installer fetches a small, freely-licensed font bundle (Fira Sans, IBM Plex
-Serif/Mono, and OpenMoji) into `~/.texforge/fonts` and registers it in your OS
+Serif/Mono, Amiri for Arabic script, and OpenMoji) into `~/.texforge/fonts` and registers it in your OS
 font directory, so documents can reference fonts **by family name** on any OS:
 
 ```latex
@@ -130,14 +137,14 @@ reinstall to add more.
 > need full-colour emoji, include them as images instead — that's outside the
 > XeTeX text path. See [the note in `docs/`](docs/emoji.md).
 
-> **Right-to-left works, with three gotchas.** Arabic, Persian and Hebrew
-> typeset correctly via `polyglossia` + `bidi` — but `polyglossia` must be the
-> *last* package you load, the font is chosen per **script**
-> (`\newfontfamily\arabicfont{...}`, not per language), and most Arabic-script
-> faces carry no Latin glyphs, so Latin words inside RTL text need wrapping in
-> `\textenglish{}` — a whole phrase per box, or it comes out reversed. texforge
-> bundles no RTL face; drop your own into `~/.texforge/fonts`. See
-> [`docs/rtl.md`](docs/rtl.md).
+> **Right-to-left works, with sharp edges.** Arabic and Persian typeset
+> correctly via `polyglossia` + `bidi` — but `polyglossia` must be the *last*
+> package you load, the font is chosen per **script**
+> (`\newfontfamily\arabicfont{...}`, not per language), `\begin{arabic}`
+> collides with LaTeX's `\arabic` counter (use `Arabic`), and Latin words inside
+> RTL text belong in `\textenglish{}` — a whole phrase per box, or they come out
+> reversed. **Amiri** is bundled for Arabic script; see the
+> [example](examples/rtl/main.tex) and [`docs/rtl.md`](docs/rtl.md).
 
 ## Observability & the issue-finder
 
@@ -199,5 +206,5 @@ install.sh / .ps1  cross-OS installers
 ## License
 
 MIT — see [LICENSE](LICENSE). Bundled fonts keep their own licenses (SIL OFL for
-Fira Sans / IBM Plex; CC BY-SA 4.0 for OpenMoji). texforge builds on the
+Fira Sans / IBM Plex / Amiri; CC BY-SA 4.0 for OpenMoji). texforge builds on the
 tectonic project (MIT).

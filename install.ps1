@@ -77,6 +77,9 @@ function Get-Font($base, $name) {
 "FiraSans-Regular","FiraSans-Bold","FiraSans-Italic","FiraSans-BoldItalic" | % { Get-Font "$GF/firasans" "$_.ttf" }
 "IBMPlexSerif-Regular","IBMPlexSerif-Bold","IBMPlexSerif-Italic" | % { Get-Font "$GF/ibmplexserif" "$_.ttf" }
 "IBMPlexMono-Regular","IBMPlexMono-Bold" | % { Get-Font "$GF/ibmplexmono" "$_.ttf" }
+# Amiri — an Arabic-script face, so RTL documents work without extra setup.
+# Nothing else in the bundle covers Arabic/Persian. See docs/rtl.md.
+"Amiri-Regular","Amiri-Bold" | % { Get-Font "$GF/amiri" "$_.ttf" }
 $om = Join-Path $Fonts "OpenMoji-Black.ttf"
 if (-not (Test-Path $om)) {
   Invoke-WebRequest -Uri "https://github.com/hfg-gmuend/openmoji/raw/master/font/OpenMoji-black-glyf/OpenMoji-black-glyf.ttf" -OutFile $om -UseBasicParsing
