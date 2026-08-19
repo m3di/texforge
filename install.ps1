@@ -70,6 +70,9 @@ if ((Test-Path $tfExe) -and (& $tfExe version 2>$null)) {
 # --- 4. Font bundle ---------------------------------------------------------
 Say "Fetching font bundle"
 $GF = "https://github.com/google/fonts/raw/main/ofl"
+$NOTO = "https://github.com/notofonts/notofonts.github.io/raw/main/fonts"
+$VAZIR = "https://github.com/rastikerdar/vazirmatn/raw/master/fonts/ttf"
+$EBG = "https://github.com/octaviopardo/EBGaramond12/raw/master/fonts/ttf"
 function Get-Font($base, $name) {
   $dest = Join-Path $Fonts $name
   if (-not (Test-Path $dest)) { Invoke-WebRequest -Uri "$base/$name" -OutFile $dest -UseBasicParsing; Info "font: $name" }
@@ -77,6 +80,17 @@ function Get-Font($base, $name) {
 "FiraSans-Regular","FiraSans-Bold","FiraSans-Italic","FiraSans-BoldItalic" | % { Get-Font "$GF/firasans" "$_.ttf" }
 "IBMPlexSerif-Regular","IBMPlexSerif-Bold","IBMPlexSerif-Italic" | % { Get-Font "$GF/ibmplexserif" "$_.ttf" }
 "IBMPlexMono-Regular","IBMPlexMono-Bold" | % { Get-Font "$GF/ibmplexmono" "$_.ttf" }
+"EBGaramond-Regular","EBGaramond-Bold","EBGaramond-Italic" | % { Get-Font $EBG "$_.ttf" }
+# Arabic script (Arabic, Persian, Urdu). Amiri is a classical naskh, Vazirmatn a
+# contemporary sans, Lalezar a display face, Gulzar a nastaliq. See docs/rtl.md.
+"Amiri-Regular","Amiri-Bold" | % { Get-Font "$GF/amiri" "$_.ttf" }
+"Vazirmatn-Regular","Vazirmatn-Bold" | % { Get-Font $VAZIR "$_.ttf" }
+Get-Font "$GF/lalezar" "Lalezar-Regular.ttf"
+Get-Font "$GF/gulzar" "Gulzar-Regular.ttf"
+# Hebrew and Devanagari. Static instances, not the variable builds: XeTeX takes
+# a variable font's default instance, which for Noto Sans Hebrew is Thin.
+"NotoSansHebrew-Regular","NotoSansHebrew-Bold" | % { Get-Font "$NOTO/NotoSansHebrew/full/ttf" "$_.ttf" }
+"NotoSansDevanagari-Regular","NotoSansDevanagari-Bold" | % { Get-Font "$NOTO/NotoSansDevanagari/full/ttf" "$_.ttf" }
 $om = Join-Path $Fonts "OpenMoji-Black.ttf"
 if (-not (Test-Path $om)) {
   Invoke-WebRequest -Uri "https://github.com/hfg-gmuend/openmoji/raw/master/font/OpenMoji-black-glyf/OpenMoji-black-glyf.ttf" -OutFile $om -UseBasicParsing

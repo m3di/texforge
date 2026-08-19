@@ -56,6 +56,16 @@ Every PDF below was rendered by texforge itself, from the sources in
   <sub>the standard <code>letter</code> class</sub>
 </td>
 </tr>
+<tr>
+<td width="50%" align="center">
+  <a href="examples/rtl/output/main.pdf"><img src="docs/previews/rtl.png" width="100%"><br><b>Right-to-left</b></a><br>
+  <sub>Arabic &amp; Persian via polyglossia + bidi, mixed with Latin</sub>
+</td>
+<td width="50%" align="center">
+  <a href="examples/specimen/output/main.pdf"><img src="docs/previews/specimen.png" width="100%"><br><b>Type specimen</b></a><br>
+  <sub>every bundled family, the same sentence per script</sub>
+</td>
+</tr>
 </table>
 
 ## Usage
@@ -107,8 +117,7 @@ engine_flags = ["--synctex"]
 
 ## Fonts & emoji
 
-The installer fetches a small, freely-licensed font bundle (Fira Sans, IBM Plex
-Serif/Mono, and OpenMoji) into `~/.texforge/fonts` and registers it in your OS
+The installer fetches a small, freely-licensed font bundle into `~/.texforge/fonts` and registers it in your OS
 font directory, so documents can reference fonts **by family name** on any OS:
 
 ```latex
@@ -119,9 +128,30 @@ font directory, so documents can reference fonts **by family name** on any OS:
 Ship it \emoji{\char"1F680}      % 🚀
 ```
 
+| script | bundled families |
+|---|---|
+| Latin (Cyrillic throughout; Greek in Fira Sans and EB Garamond) | **Fira Sans** · **IBM Plex Serif** · **EB Garamond** · **IBM Plex Mono** |
+| Arabic, Persian, Urdu | **Amiri** (naskh) · **Vazirmatn** (sans) · **Lalezar** (display) · **Gulzar** (nastaliq) |
+| Hebrew | **Noto Sans Hebrew** |
+| Devanagari (Hindi, Marathi, Sanskrit) | **Noto Sans Devanagari** |
+| Emoji | **OpenMoji Black** (monochrome — see below) |
+
+The [type specimen](examples/specimen/output/main.pdf) sets one sentence per
+script in every one of them, side by side, with the `\setmainfont{…}` line to
+copy — render it yourself with
+`texforge render examples/specimen/main.tex`.
+
 Run `texforge fonts` to list what's bundled, `texforge fonts --install` to
 (re)register it. Drop your own `.ttf`/`.otf` into `~/.texforge/fonts` and
 reinstall to add more.
+
+> **Fonts texforge cannot ship.** The bundle is limited to freely
+> redistributable faces. Commercial ones — the Persian **B-series** (B Nazanin,
+> B Titr, B Yas, B Mitra, B Zar), IRANSans, and the like — are licensed, so
+> install them yourself: drop the files into `~/.texforge/fonts`, run
+> `texforge fonts --install`, and they resolve by family name exactly like the
+> bundled ones. CJK is left out for size rather than licence — the Noto CJK
+> families run to tens of megabytes each; install one the same way if you need it.
 
 > **Emoji are monochrome — by engine design.** tectonic is XeTeX-based, and
 > XeTeX cannot rasterize *colour* emoji fonts (neither bitmap `CBDT` like Noto
@@ -129,6 +159,16 @@ reinstall to add more.
 > **OpenMoji Black**, an outline font that renders as crisp black glyphs. If you
 > need full-colour emoji, include them as images instead — that's outside the
 > XeTeX text path. See [the note in `docs/`](docs/emoji.md).
+
+> **Right-to-left works, with sharp edges.** Arabic and Persian typeset
+> correctly via `polyglossia` + `bidi` — but `polyglossia` must be the *last*
+> package you load, the font is chosen per **script**
+> (`\newfontfamily\arabicfont{...}`, not per language), `\begin{arabic}`
+> collides with LaTeX's `\arabic` counter (use `Arabic`), and Latin words inside
+> RTL text belong in `\textenglish{}` — a whole phrase per box, or they come out
+> reversed. **Amiri**, **Vazirmatn**, **Lalezar** and **Gulzar** are bundled for
+> Arabic script and **Noto Sans Hebrew** for Hebrew; see the
+> [example](examples/rtl/main.tex) and [`docs/rtl.md`](docs/rtl.md).
 
 ## Observability & the issue-finder
 
@@ -141,8 +181,9 @@ texforge analyze output/texforge.log.jsonl
 
 The analyzer recognises common failure and inefficiency signatures — missing
 package, undefined control sequence, font-not-found, missing image, unresolved
-`\ref`/`\cite`, overfull/underfull boxes, multiply-defined labels — and prints a
-plain-language **suggestion** for each. It runs automatically after every build:
+`\ref`/`\cite`, overfull/underfull boxes, multiply-defined labels, name
+collisions, and RTL/`bidi` setup mistakes — and prints a plain-language
+**suggestion** for each. It runs automatically after every build:
 
 ```
 error Undefined control sequence (×2)
@@ -189,5 +230,6 @@ install.sh / .ps1  cross-OS installers
 ## License
 
 MIT — see [LICENSE](LICENSE). Bundled fonts keep their own licenses (SIL OFL for
-Fira Sans / IBM Plex; CC BY-SA 4.0 for OpenMoji). texforge builds on the
+Fira Sans, IBM Plex, EB Garamond, Amiri, Vazirmatn, Lalezar, Gulzar and the Noto
+families; CC BY-SA 4.0 for OpenMoji). texforge builds on the
 tectonic project (MIT).
